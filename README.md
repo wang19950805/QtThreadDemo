@@ -31,8 +31,8 @@
                 emit sendArrList(list);      
             });
 ```
-      3.BubbleSort::run()和Quick::run()执行完毕后,发送finished()信号,在主线程中进行ui数据显示
-      
+#### 3.BubbleSort::run()和Quick::run()执行完毕后,发送finished()信号,在主线程中进行ui数据显示
+```c++       
             connect(quick,&Quick::finished,this,[=](QVector<int> list){
                 for (int i = 0; i < list.size()-1; ++i) {
                     ui->listWidget_Quick->addItem(QString::number(list.at(i)));
@@ -44,8 +44,9 @@
                   ui->listWidget_Bubble->addItem(QString::number(list.at(i)));
                 }
             });
-
-      4.回收资源
+```
+#### 4.回收资源
+```c++ 
             connect(this,&MainWindow::destroyed,this,[=](){
                 randNum->quit();
                 randNum->wait();
@@ -58,9 +59,8 @@
                 quick->quit();
                 quick->wait();
                 quick->deleteLater();
-
             });
-
+```
 
 
 
