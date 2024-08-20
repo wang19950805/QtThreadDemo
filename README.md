@@ -5,11 +5,11 @@ Qt多线程的使用:
   Demo1:  
   
       1.将该三个类都继承QThread类,并重写run()方法,点击开始按钮生成随机数
-    '''c++
+    
             class RandomNum : public QThread{}
             class BubbleSort : public QThread{}
             class Quick : public QThread{}
-    '''             
+               
             connect(this,&MainWindow::starting,randNum,&RandomNum::revNum);
             connect(ui->btnStart,&QPushButton::clicked,this,[=](){
                 //发送信号,生成十万个随机数
