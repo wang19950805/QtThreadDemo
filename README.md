@@ -9,14 +9,14 @@
             class RandomNum : public QThread{}
             class BubbleSort : public QThread{}
             class Quick : public QThread{}
-               
+           ```c++    
             connect(this,&MainWindow::starting,randNum,&RandomNum::revNum);
             connect(ui->btnStart,&QPushButton::clicked,this,[=](){
                 //发送信号,生成十万个随机数
                 emit starting(10000);
                 randNum->start();
             });
-              
+         ```
       2.RandomNum在run()方法中生成随机数完成后,发送sendRandomArray()的信号,在mainwindow中连接的信号槽函数将剩余两个子线程启动
       
             connect(randNum,&RandomNum::sendRandomArray,this,[=](QVector<int> list){
