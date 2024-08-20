@@ -6,8 +6,7 @@
   
 #### 1.将该三个类都继承QThread类,并重写run()方法,点击开始按钮生成随机数
  ```c++     
-class RandomNum : public QThread{}
- ```
+            class RandomNum : public QThread{}
             class BubbleSort : public QThread{}
             class Quick : public QThread{}
              
@@ -17,6 +16,8 @@ class RandomNum : public QThread{}
                 emit starting(10000);
                 randNum->start();
             });
+ ```
+            
         
       2.RandomNum在run()方法中生成随机数完成后,发送sendRandomArray()的信号,在mainwindow中连接的信号槽函数将剩余两个子线程启动
       
