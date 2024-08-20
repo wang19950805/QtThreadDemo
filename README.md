@@ -2,7 +2,7 @@
     
    ## 案例中使用RandomNum类来生成十万个随机数,并使用BubbleSort类和Quick类对十万个随机数进行冒泡排序和快速排序
 
-  Demo1:  
+  ### Demo1:  
   
       1.将该三个类都继承QThread类,并重写run()方法,点击开始按钮生成随机数
     
