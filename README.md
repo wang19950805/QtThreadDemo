@@ -4,7 +4,7 @@
 
   ### Demo1:  
   
-      1.将该三个类都继承QThread类,并重写run()方法,点击开始按钮生成随机数
+#### 1.将该三个类都继承QThread类,并重写run()方法,点击开始按钮生成随机数
     
             class RandomNum : public QThread{}
             class BubbleSort : public QThread{}
