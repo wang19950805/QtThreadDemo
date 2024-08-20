@@ -138,7 +138,72 @@
 
 ```c++ 
             RandomNum::RandomNum(QObject *parent):QObject(parent),QRunnable(){ setAutoDelete(true); }
+            BubbleSort::BubbleSort(QObject *parent):QObject(parent),QRunnable(){ setAutoDelete(true); }
+            Quick::Quick(QObject *parent):QObject(parent),QRunnable(){ setAutoDelete(true); }
 ```
 QRunnable下的setAutoDelete(bool autoDelete)方法,可以自动管理资源的释放,将函数中的布尔值参数设置成true即可
 
+ #### 2.使用QThreadPool::globalInstance()->start(QRunnable *runnable, int priority = 0)方法来开启一个子线程
+```c++ 
+            connect(ui->btnStart,&QPushButton::clicked,this,[=](){
+                emit starting(10000);
+                QThreadPool::globalInstance()->start(randNum);
+            });
+```
+ #### 3.同样的在RandomNumrun生成随机数完成后,开启另外两个子线程进行排序
+ ```c++ 
+             connect(randNum,&RandomNum::sendRandomArray,this,[=](QVector<int> list){
+                 QThreadPool::globalInstance()->start(bubble);
+                 QThreadPool::globalInstance()->start(quick);
+                 for (int i = 0; i < list.size()-1; ++i) {
+ 
+                    ui->listWidget_random->addItem(QString::number(list.at(i)));
+                 }
+                 emit sendArrList(list);
 
+              });
+```
+ #### 4.在主线程中显示ui排序数据,由于QThreadpool设置了自动管理资源,最后不需要编写代码手动释放资源
+ ```c++ 
+            connect(quick,&Quick::finished,this,[=](QVector<int> list){
+                for (int i = 0; i < list.size()-1; ++i) {
+
+                    ui->listWidget_Quick->addItem(QString::number(list.at(i)));
+                }
+            });
+
+            connect(bubble,&BubbleSort::finished,this,[=](QVector<int> list){
+                for (int i = 0; i < list.size()-1; ++i) {
+    
+                    ui->listWidget_Bubble->addItem(QString::number(list.at(i)));
+                }
+            });
+    
+```
+
+### 总结:  
+        1.默认的线程在Qt中称之为窗口线程，也叫主线程，负责窗口事件处理或者窗口控件数据的更新
+        
+        2.子线程负责后台的业务逻辑处理，子线程中不能对窗口对象做任何操作，只有主线程才能操作程序中的窗口对象
+        
+        3.主线程和子线程之间如果要进行数据的传递，需要使用Qt中的信号槽机制
+        
+        4.如果要在一个子线程中处理多个任务，所有的处理逻辑都需要写到run()函数中，这样该函数中的处理逻辑就会变得非常混乱，不太容易维护
+        
+        5.使用创建任务对象的方式,将任务对象加入到子线程中执行,就可以避免上述情况,代码更容易维护
+        
+        6.使用线程池来减少子线程频繁的创建和销毁回收,可以提高系统执行效率
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
